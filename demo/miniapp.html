@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINE Chatbot Admin • TAM</title>
+    <title>LINE Chatbot Admin • 26/02/2026</title>
     <link id="favicon" rel="icon" href="https://cdn-icons-png.flaticon.com/128/9977/9977388.png">
     <link id="apple-touch-icon" rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/128/9977/9977388.png">
     <meta name="description" content="LINE Chatbot Admin" />
     <meta name="author" content="TAM" />
     <meta property="og:title" content="LINE Chatbot Admin" />
-    <meta property="og:description" content="LINE Chatbot Admin-TAM Thailand" />
+    <meta property="og:description" content="LINE Chatbot Admin-TAM" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://google.com" />
     <meta property="og:image" content="https://cdn-icons-png.flaticon.com/128/9977/9977388.png" />
@@ -173,7 +173,9 @@
             background-color: rgba(248, 250, 252, 0.8);
         }
 
-        margin-bottom: var(--android-safe-area-inset-bottom, env(safe-area-inset-bottom));
+        body {
+            margin-bottom: var(--android-safe-area-inset-bottom, env(safe-area-inset-bottom));
+        }
     </style>
 </head>
 
@@ -203,7 +205,7 @@
         // ==============================================
         //                  CONFIGURATION
         // ==============================================
-        const LIFF_ID = "2009118781-bafZettx";
+         const LIFF_ID = "2009118781-bafZettx";
         const SUPABASE_URL = "https://kunlesupsfqluyoansql.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1bmxlc3Vwc2ZxbHV5b2Fuc3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA4OTk0NjMsImV4cCI6MjA4NjQ3NTQ2M30.stHKIE0VuzOUdjsvC440OBBOf22AVBE0qx44ztSeCjQ";
 
@@ -564,9 +566,16 @@
                 // Desktop Rows
                 data.forEach(kw => {
 
-                    let trigger = '';
-                    if (kw.keyword) trigger += `<div class="flex items-center gap-2 mb-1.5"><span class="bg-white/80 text-slate-600 px-2 py-0.5 rounded-lg text-[11px] font-mono border shadow-sm ring-1 ring-slate-100">Text</span> <span class="font-bold text-slate-800 truncate max-w-[200px] text-[15px]">${escapeHtml(kw.keyword)}</span></div>`;
-                    if (kw.reply_postback) trigger += `<div class="flex items-center gap-2"><span class="bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-lg text-[11px] font-mono border border-indigo-100">PB</span> <span class="font-mono text-xs text-slate-500 truncate max-w-[200px]">${escapeHtml(kw.reply_postback)}</span></div>`;
+                    let trigger = '<div class="flex flex-col gap-2">';
+                    if (kw.keyword) {
+                        const tags = kw.keyword.split(',').map(t => `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200">${escapeHtml(t.trim())}</span>`).join('');
+                        trigger += `<div class="flex flex-wrap items-center gap-1.5"><span class="text-slate-500 text-[10px] font-mono mr-1">TXT:</span>${tags}</div>`;
+                    }
+                    if (kw.reply_postback) {
+                        const tags = kw.reply_postback.split(',').map(t => `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">${escapeHtml(t.trim())}</span>`).join('');
+                        trigger += `<div class="flex flex-wrap items-center gap-1.5"><span class="text-indigo-400 text-[10px] font-mono mr-1">PB:</span>${tags}</div>`;
+                    }
+                    trigger += '</div>';
 
                     let typeBadge = '';
                     if (kw.reply_text) typeBadge = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100/80 text-emerald-800 border border-emerald-200"><i data-lucide="type" class="w-3.5 h-3.5"></i> Text</span>`;
@@ -604,9 +613,16 @@
                 html += `<div class="md:hidden grid grid-cols-1 divide-y divide-gray-100">`;
                 data.forEach(kw => {
 
-                    let trigger = '';
-                    if (kw.keyword) trigger += `<div class="flex items-center gap-2 mb-2"><span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px] font-mono border">TEXT</span> <span class="font-bold text-slate-800 text-sm break-all">${escapeHtml(kw.keyword)}</span></div>`;
-                    if (kw.reply_postback) trigger += `<div class="flex items-center gap-2 mb-2"><span class="bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded text-[10px] font-mono border border-indigo-100">PB</span> <span class="font-mono text-xs text-slate-500 break-all">${escapeHtml(kw.reply_postback)}</span></div>`;
+                    let trigger = '<div class="flex flex-col gap-1.5 mb-2">';
+                    if (kw.keyword) {
+                        const tags = kw.keyword.split(',').map(t => `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 break-all">${escapeHtml(t.trim())}</span>`).join('');
+                        trigger += `<div class="flex flex-wrap items-center gap-1"><span class="text-slate-400 text-[9px] font-mono mr-1">TXT:</span>${tags}</div>`;
+                    }
+                    if (kw.reply_postback) {
+                        const tags = kw.reply_postback.split(',').map(t => `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 break-all">${escapeHtml(t.trim())}</span>`).join('');
+                        trigger += `<div class="flex flex-wrap items-center gap-1"><span class="text-indigo-300 text-[9px] font-mono mr-1">PB:</span>${tags}</div>`;
+                    }
+                    trigger += '</div>';
 
                     let typeLabel = 'Text';
                     let typeColor = 'bg-emerald-100 text-emerald-800';
@@ -998,6 +1014,92 @@
             }, 300);
         }
 
+        function removeTag(hiddenId, index) {
+            const hidden = document.getElementById(hiddenId);
+            let tags = hidden.value.split(',').map(s => s.trim()).filter(Boolean);
+            tags.splice(index, 1);
+            hidden.value = tags.join(',');
+            renderTags(hiddenId);
+        }
+
+
+        function processTagInput(inputEl, hiddenId) {
+            let val = inputEl.value;
+            val = val.replace(/[,]+$/, '').trim();
+            if (val) {
+                const hidden = document.getElementById(hiddenId);
+                if (hidden) {
+                    let tags = hidden.value ? hidden.value.split(',').map(s => s.trim()).filter(Boolean) : [];
+                    if (!tags.includes(val)) {
+                        tags.push(val);
+                        hidden.value = tags.join(',');
+                        renderTags(hiddenId);
+                    }
+                }
+            }
+            inputEl.value = '';
+        }
+
+        function handleTagInput(e, hiddenId) {
+            const val = e.target.value;
+            if (val.includes(',')) {
+                const parts = val.split(',');
+                const lastPart = parts.pop();
+                parts.forEach(part => {
+                    const cleanPart = part.trim();
+                    if (cleanPart) {
+                        e.target.value = cleanPart;
+                        processTagInput(e.target, hiddenId);
+                    }
+                });
+                e.target.value = lastPart.trimStart();
+            }
+        }
+
+        function handleTagKeyup(e, hiddenId) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                e.preventDefault();
+                processTagInput(e.target, hiddenId);
+            }
+        }
+
+        function handleTagKeydown(e, hiddenId) {
+            // "Enter" on Android might be "Unidentified" or standard "Enter"
+            if (e.key === 'Enter' || e.keyCode === 13 || e.key === ',') {
+                e.preventDefault(); // Prevent form submit
+                processTagInput(e.target, hiddenId);
+            } else if (e.key === 'Backspace' && e.target.value === '') {
+                const hidden = document.getElementById(hiddenId);
+                if (hidden) {
+                    let tags = hidden.value ? hidden.value.split(',').map(s => s.trim()).filter(Boolean) : [];
+                    if (tags.length > 0) {
+                        tags.pop();
+                        hidden.value = tags.join(',');
+                        renderTags(hiddenId);
+                    }
+                }
+            }
+        }
+
+        function renderTags(hiddenId) {
+            const hidden = document.getElementById(hiddenId);
+            if (!hidden) return;
+            const wrapperId = hiddenId.replace('-hidden', '-tags');
+            const wrapper = document.getElementById(wrapperId);
+            if (!wrapper) return;
+            wrapper.innerHTML = '';
+            const val = hidden.value.trim();
+            if (!val) return;
+            const tags = val.split(',').map(s => s.trim()).filter(Boolean);
+            tags.forEach((tag, idx) => {
+                const el = document.createElement('span');
+                el.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm font-medium bg-slate-600 text-white shadow-sm';
+                el.innerHTML = `${escapeHtml(tag)} <button type="button" onclick="removeTag('${hiddenId}', ${idx})" class="p-0.5 hover:text-red-300 transition-colors focus:outline-none"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>`;
+                wrapper.appendChild(el);
+            });
+            lucide.createIcons();
+        }
+
         function openModal() {
             const overlay = document.getElementById('modal-overlay');
             const container = document.getElementById('modal-container');
@@ -1034,7 +1136,7 @@
                 }
             }
 
-            // Fetch Rich Menus for the dropdown
+
             const { data: richMenus } = await supabaseClient.from('rich_menus').select('name, rich_menu_id').order('name');
             const richMenuOptions = (richMenus || []).map(rm =>
                 `<option value="${rm.rich_menu_id}" ${data.reply_richmenu === rm.rich_menu_id ? 'selected' : ''}>${escapeHtml(rm.name)} (${rm.rich_menu_id})</option>`
@@ -1049,12 +1151,20 @@
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Keyword (ข้อความ)</label>
-                                <input type="text" name="keyword" value="${escapeHtml(data.keyword || '')}" class="w-full rounded-xl border-slate-200 border p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm bg-white" placeholder="เช่น โปรโมชั่น" />
+                                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Keyword (คำค้นหา)</label>
+                                <div class="w-full rounded-xl border-slate-200 border p-2 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 transition shadow-sm bg-white flex flex-wrap gap-2 items-center min-h-[50px] cursor-text" onclick="document.getElementById('keyword-input').focus()">
+                                    <div id="keyword-tags" class="flex flex-wrap gap-2"></div>
+                                    <input type="text" enterkeyhint="done" id="keyword-input" class="flex-1 min-w-[120px] outline-none border-none p-1 text-sm bg-transparent" placeholder="พิมพ์แล้วกด Enter" onkeydown="handleTagKeydown(event, 'keyword-hidden')" onkeyup="handleTagKeyup(event, 'keyword-hidden')" oninput="handleTagInput(event, 'keyword-hidden')" onblur="if(this.value.trim()) processTagInput(this, 'keyword-hidden')" />
+                                    <input type="hidden" name="keyword" id="keyword-hidden" value="${escapeHtml(data.keyword || '')}">
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-slate-700 mb-1.5">Postback Data (ปุ่มกด)</label>
-                                <input type="text" name="reply_postback" value="${escapeHtml(data.reply_postback || '')}" class="w-full rounded-xl border-slate-200 border p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-mono text-sm px-3 shadow-sm bg-white" placeholder="action=buy&id=1" />
+                                <div class="w-full rounded-xl border-slate-200 border p-2 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 transition shadow-sm bg-white flex flex-wrap gap-2 items-center min-h-[50px] cursor-text" onclick="document.getElementById('postback-input').focus()">
+                                    <div id="postback-tags" class="flex flex-wrap gap-2"></div>
+                                    <input type="text" enterkeyhint="done" id="postback-input" class="flex-1 min-w-[120px] outline-none border-none p-1 text-sm bg-transparent font-mono" placeholder="พิมพ์แล้วกด Enter" onkeydown="handleTagKeydown(event, 'postback-hidden')" onkeyup="handleTagKeyup(event, 'postback-hidden')" oninput="handleTagInput(event, 'postback-hidden')" onblur="if(this.value.trim()) processTagInput(this, 'postback-hidden')" />
+                                    <input type="hidden" name="reply_postback" id="postback-hidden" value="${escapeHtml(data.reply_postback || '')}">
+                                </div>
                             </div>
                         </div>
                         <p class="text-[11px] text-slate-400 mt-2.5 flex items-center gap-1"><i data-lucide="info" class="w-3 h-3"></i> ใส่เพียงอย่างใดอย่างหนึ่ง หรือทั้งคู่ก็ได้</p>
@@ -1152,6 +1262,8 @@
             updateContentPlaceholder(data.replyType);
             document.getElementById('keywordForm').onsubmit = handleKeywordSubmit;
             openModal();
+            renderTags('keyword-hidden');
+            renderTags('postback-hidden');
             lucide.createIcons();
         }
 
@@ -1305,6 +1417,11 @@
             e.preventDefault();
             const f = e.target;
             const submitBtn = f.querySelector('button[type="submit"]');
+
+            const keywordInput = document.getElementById('keyword-input');
+            const postbackInput = document.getElementById('postback-input');
+            if (keywordInput && keywordInput.value.trim()) processTagInput(keywordInput, 'keyword-hidden');
+            if (postbackInput && postbackInput.value.trim()) processTagInput(postbackInput, 'postback-hidden');
 
             const replyType = f.replyType.value;
             let content = (replyType === 'image') ? f.content_input.value : f.content.value;
@@ -1707,7 +1824,7 @@
 
             showToast('กำลังลบจาก LINE...', 'loading');
 
-            // 1. Get rich_menu_id
+
             const { data: menu, error: fetchError } = await supabaseClient.from('rich_menus').select('rich_menu_id').eq('id', id).single();
             if (fetchError) {
                 showToast('ไม่พบข้อมูล: ' + fetchError.message, 'error');
@@ -1715,7 +1832,7 @@
             }
 
             try {
-                // 2. Call Edge Function (Unified) to delete from LINE
+
                 const { data: funcData, error: funcError } = await supabaseClient.functions.invoke('sync-rich-menus', {
                     body: { action: 'delete', richMenuId: menu.rich_menu_id }
                 });
@@ -1723,7 +1840,7 @@
                 if (funcError) throw funcError;
                 if (funcData && funcData.error) throw new Error(funcData.error);
 
-                // 3. Delete from DB
+
                 const { error: deleteError } = await supabaseClient.from('rich_menus').delete().eq('id', id);
                 if (deleteError) throw deleteError;
 
